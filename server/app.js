@@ -41,8 +41,8 @@ app.get("/docs", (req, res, next) => {
 ////GET for 2 collections
 app.get("/students", (req, res) => {
   students
-    .populate("cohort")
     .find({})
+    .populate("cohort")
     .then((student) => {
       console.log("Retrieved student ->", student);
       res.json(student);
@@ -69,8 +69,8 @@ app.get("/students/:studentId", (req, res) => {
   const { studentId } = req.params;
 
   students
-    .populate("cohort")
     .findById(studentId)
+    .populate("cohort")
     .then((student) => {
       if (!student) {
         return res.status(404).json({ error: "Student not found" });
@@ -105,11 +105,11 @@ app.get("/cohorts/:cohortId", (req, res) => {
 ////
 ////
 ////GET /api/students/cohort/:cohortId - Retrieves all of the students for a given cohort
-app.get("/api/students/cohort/:cohortId", (req, res) => {
+app.get("/students/cohort/:cohortId", (req, res) => {
   const { cohortId } = req.params;
   students
-    .populate("cohort")
     .find({ cohort: cohortId })
+    .populate("cohort")
     .then((students) => {
       res.json(students);
     })
@@ -162,6 +162,7 @@ app.post("/students", (req, res) => {
 app.post("/cohorts", (req, res) => {
   const {
     cohortSlug,
+    cohortName,
     program,
     format,
     campus,
@@ -176,6 +177,7 @@ app.post("/cohorts", (req, res) => {
   cohorts
     .create({
       cohortSlug,
+      cohortName,
       program,
       format,
       campus,
@@ -243,6 +245,7 @@ app.put("/cohorts/:cohortId", (req, res) => {
   const { cohortId } = req.params;
   const {
     cohortSlug,
+    cohortName,
     program,
     format,
     campus,
@@ -259,6 +262,7 @@ app.put("/cohorts/:cohortId", (req, res) => {
       cohortId,
       {
         cohortSlug,
+        cohortName,
         program,
         format,
         campus,
