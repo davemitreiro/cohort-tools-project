@@ -41,6 +41,7 @@ app.get("/docs", (req, res, next) => {
 ////GET for 2 collections
 app.get("/students", (req, res) => {
   students
+    .populate("cohort")
     .find({})
     .then((student) => {
       console.log("Retrieved student ->", student);
@@ -68,6 +69,7 @@ app.get("/students/:studentId", (req, res) => {
   const { studentId } = req.params;
 
   students
+    .populate("cohort")
     .findById(studentId)
     .then((student) => {
       if (!student) {
@@ -106,6 +108,7 @@ app.get("/cohorts/:cohortId", (req, res) => {
 app.get("/api/students/cohort/:cohortId", (req, res) => {
   const { cohortId } = req.params;
   students
+    .populate("cohort")
     .find({ cohort: cohortId })
     .then((students) => {
       res.json(students);
@@ -129,6 +132,7 @@ app.post("/students", (req, res) => {
     background,
     image,
     cohort,
+    projects,
   } = req.body;
 
   students
@@ -143,6 +147,7 @@ app.post("/students", (req, res) => {
       background,
       image,
       cohort,
+      projects,
     })
     .then((student) => {
       console.log("Student created:", student);
@@ -205,6 +210,7 @@ app.put("/students/:studentId", (req, res) => {
     background,
     image,
     cohort,
+    projects,
   } = req.body;
   students
     .findByIdAndUpdate(
@@ -220,6 +226,7 @@ app.put("/students/:studentId", (req, res) => {
         background,
         image,
         cohort,
+        projects,
       },
       { new: true }
     )
