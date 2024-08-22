@@ -8,6 +8,22 @@ const students = require("./models/Student.model");
 const cohorts = require("./models/Cohort.model");
 
 const cors = require("cors");
+/*
+        W                             
+       WWW          
+       WWW          
+      WWWWW         
+W     WWWWW     W   
+WWW   WWWWW   WWW   
+ WWW  WWWWW  WWW    
+  WWW  WWW  WWW     
+   WWW WWW WWW      
+     WWWWWWW        
+  WWWW  |  WWWW     
+        |           
+        |
+        
+*/
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/cohorts-tools-api")
