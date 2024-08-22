@@ -7,15 +7,13 @@ function errorHandler(err, req, res, next) {
   // Check if the response was already sent - sending a response twice for the same request will cause an error.
   if (!res.headersSent) {
     // If not, send the response with status code 500 and generic error message
-    res
-      .status(500)
-      .json({ message: "Internal server error. Check the server console" });
+    res.status(500).json({ message: " server error. " });
   }
 }
 
 function notFoundHandler(req, res, next) {
   // This middleware will run whenever the requested route is not found
-  res.status(404).json({ message: "This route does not exist" });
+  res.status(404).json({ message: "Error happened" });
 }
 
 module.exports = {

@@ -8,22 +8,6 @@ const students = require("./models/Student.model");
 const cohorts = require("./models/Cohort.model");
 
 const cors = require("cors");
-/*
-        W                             
-       WWW          
-       WWW          
-      WWWWW         
-W     WWWWW     W   
-WWW   WWWWW   WWW   
- WWW  WWWWW  WWW    
-  WWW  WWW  WWW     
-   WWW WWW WWW      
-     WWWWWWW        
-  WWWW  |  WWWW     
-        |           
-        |
-        
-*/
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/cohorts-tools-api")
@@ -136,7 +120,7 @@ app.get("/students/cohort/:cohortId", (req, res) => {
 });
 
 ///POST for 2 collections
-app.post("/students", (req, res) => {
+app.post("/students", (req, res, next) => {
   const {
     firstName,
     lastName,
@@ -169,13 +153,12 @@ app.post("/students", (req, res) => {
       console.log("Student created:", student);
       res.status(201).json(student);
     })
-    .catch((err) => {
-      console.error("Error creating student:", err);
-      res.status(500).json({ error: "Failed to create student" });
+    .catch((error) => {
+      next(error);
     });
 });
 
-app.post("/cohorts", (req, res) => {
+app.post("/cohorts", (req, res, next) => {
   const {
     cohortSlug,
     cohortName,
@@ -208,9 +191,8 @@ app.post("/cohorts", (req, res) => {
       console.log("Cohort created:", cohort);
       res.status(201).json(cohort);
     })
-    .catch((err) => {
-      console.error("Error creating cohort:", err);
-      res.status(500).json({ error: "Failed to create cohort" });
+    .catch((error) => {
+      next(error);
     });
 });
 
@@ -252,8 +234,8 @@ app.put("/students/:studentId", (req, res) => {
       res.json(student);
     })
     .catch((err) => {
-      console.error("Error updating student:", err);
-      res.status(500).json({ error: "Failed to update student" });
+      console.error("Error creating student:", err);
+      next(err);
     });
 });
 
@@ -328,6 +310,14 @@ app.delete("/cohorts/:cohortId", (req, res) => {
       res.status(500).json({ error: "Failed to delete cohort" });
     });
 });
+
+const {
+  errorHandler,
+  notFoundHandler,
+} = require("./middleware/error-handling");
+
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 // START SERVER
 app.listen(PORT, () => {
