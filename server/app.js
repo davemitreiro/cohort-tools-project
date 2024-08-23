@@ -11,6 +11,7 @@ const cors = require("cors");
 
 const authRoutes = require("./routes/auth.routes");
 const protectedRoutes = require("./routes/protected.routes");
+const User = require("./models/User.model");
 
 const { isAuthenticated } = require("./middleware/jwt.middleware");
 const {
@@ -317,6 +318,18 @@ app.delete("/cohorts/:cohortId", (req, res) => {
     .catch((err) => {
       console.error("Error deleting cohort:", err);
       res.status(500).json({ error: "Failed to delete cohort" });
+    });
+});
+
+app.get("/users", (req, res) => {
+  User.find({})
+    .then((user) => {
+      console.log("Retrieved user ->", user);
+      res.json(user);
+    })
+    .catch((error) => {
+      console.error("Error while retrieving users ->", error);
+      res.status(500).json({ error: "Failed to retrieve users" });
     });
 });
 
