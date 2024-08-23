@@ -9,6 +9,15 @@ const cohorts = require("./models/Cohort.model");
 
 const cors = require("cors");
 
+const authRoutes = require("./routes/auth.routes");
+const protectedRoutes = require("./routes/protected.routes");
+
+const { isAuthenticated } = require("./middleware/jwt.middleware");
+const {
+  errorHandler,
+  notFoundHandler,
+} = require("./middleware/error-handling");
+
 mongoose
   .connect("mongodb://127.0.0.1:27017/cohorts-tools-api")
   .then((x) => console.log(`Connected to Database: "${x.connections[0].name}"`))
@@ -311,10 +320,9 @@ app.delete("/cohorts/:cohortId", (req, res) => {
     });
 });
 
-const {
-  errorHandler,
-  notFoundHandler,
-} = require("./middleware/error-handling");
+app.use("/auth", authRoutes);
+
+app.use("/protected", isAuthenticated, protectedRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
